@@ -1,7 +1,16 @@
 (function() {
   var nodes = document.querySelectorAll('pre code');
   for (var i = nodes.length - 1; i >= 0; i--) {
-    nodes[i].innerHTML = nodes[i].innerHTML.trim();
+    var node = nodes[i]
+    if (node.classList.contains('language-js') || node.classList.contains('language-jsx')) {
+      node.setAttribute('data-keep-tags', 'u,i')
+    }
+    var source = node.innerHTML
+    var margin = (source.match(/^(?:.*?\n)?([ \t]+)/) || [])[1] || ''
+    if (margin) {
+      source = source.replace(new RegExp('^' + margin, 'gm'), '')
+    }
+    node.innerHTML = source.trim();
   };
 })();
 

@@ -29,12 +29,16 @@
   line-height: 1em;
 }
 
+.reveal p {
+  line-height: 1.5em;
+}
+
 .reveal tt,
 .reveal code,
 .reveal pre {
   font-family: 'Operator Mono Ssm', 'Source Code Pro', Menlo, Monaco, Consolas,
     monospace;
-  font-size: 0.65em;
+  font-size: 0.7em;
   line-height: 1.3em;
 }
 
@@ -405,4 +409,23 @@ b.hl {
 
 .pros-and-cons > div li:nth-child(2n) {
   color: rgb(8, 129, 199);
+}
+
+.reveal section > p {
+  font-size: 90%;
+}
+
+.reveal q.major {
+  display: block;
+  margin: 1.3em 0 0.2em;
+  font: italic 1.2em Merriweather;
+}
+
+.reveal a + cite {
+  font-size: 80%;
+  color: gray;
+}
+
+.reveal .centerTweet > .twitter-tweet {
+  margin: 0 auto;
 }

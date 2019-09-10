@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 
 	<head>
 		<meta charset="utf-8">
 
-		<title>Présentiel, vidéo, conférence, article… quel format pour transmettre ? • Christophe Porteneuve @ Human Talks 2019</title>
+		<title>Deep dive in React Hooks • Christophe Porteneuve @ Station F</title>
 
-		<meta name="description" content="Il existe bien des façons de transmettre la connaissance, notamment la connaissance technique : cours traditionnel, formation professionnelle, screencast, atelier, présentation en conférence… Quel format pour quel objectifs ? Christophe en compare rapidement les forces et faiblesses, parle de leurs pertinences et liste quelques meilleures pratiques à garder à l’esprit.">
+		<meta name="description" content="React’s been abuzz with hooks for a year now, and they shipped back in February. What’s it all about? In this 2-hour talk (with Q&A), Christophe walks you through this amazing new feature that brings out the core essence of React and makes coding components so much more enjoyable. How are hooks useful, and often better? Should you migrate your code, and if so, how best to go about it? What are the pitfalls? Christophe tries to cover all of this and more.">
 		<meta name="author" content="Christophe Porteneuve">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -42,12 +42,9 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section id="mainTitle">
-					<h1>
-            <span style="font-size: 60%">Présentiel, vidéo, conférence, article…</span>
-            <span>quel format pour transmettre ?</span>
-          </h1>
+					<h1>Deep dive in React Hooks</h1>
 					<p>
-						<small>Un p’tit talk de <a href="http://tddsworld.com/">Christophe Porteneuve</a> à <a href="https://www.meetup.com/fr-FR/HumanTalks-Paris/events/264551188/">HumanTalks Paris</a></small>
+            <small>A talk by <a href="http://tddsworld.com/">Christophe Porteneuve</a> at <a href="https://stationf.co">Station F</a> • October 24, 2019</small>
 					</p>
 				</section>
 
@@ -59,7 +56,7 @@ const christophe = {
   family: { wife: 'Élodie', sons: ['Maxence', 'Elliott'] },
   city: 'Paris, FR',
   company: 'Delicious Insights',
-  trainings: ['Web Apps Modernes', 'Node.js', 'Git Total', 'ES Total', 'Webpack'],
+  trainings: ['Modern Web Apps', 'Node.js', '360° Git', '360° ES', 'Webpack'],
   webDevSince: 1995,
   claimsToFame: [
     'Prototype.js',
@@ -73,502 +70,970 @@ const christophe = {
           </code></pre>
         </section>
 
-        <section id="intro">
-          <h2>Mais encore…?</h2>
-          <p>Transmettre la connaissance, c’est bon.</p>
-          <p>C’est le kif.</p>
-          <p>Mais comment transmettre au mieux ?</p>
-          <p>Selon le sujet, les contraintes, les objectifs, les moyens…<br/>un format sera plus adapté que d’autres.</p>
+        <section id="what-are-hooks">
+          <h1>What are hooks?</h1>
         </section>
 
-        <section>
-          <section id="questions">
-            <h1>Pose-toi la question…</h1>
-          </section>
+        <section id="fx-components-are-dope">
+          <h2>Function components are dope!</h2>
 
-          <section id="question-what">
-            <h2>Quoi ?</h2>
-            <h4>Quel type de connaissance transmets-tu ?</h4>
-            <ul>
-              <li>Une compétence <strong>technique</strong> ?</li>
-              <li>Une compétence organisationnelle ?</li>
-              <li>Une astuce de vie <em>(life hack) ?</em></li>
-              <li>Une compétence humaine ?</li>
-              <li>De la <strong>connaissance générale</strong> / théorique ?</li>
-              <li>Sujet <strong>fluide</strong> ou stable ?</li>
-            </ul>
-          </section>
+          <p>We used to reach for classes when needing state, lifecycle, refs, and more.</p>
+          <p>Most of this is now doable with <strong>function</strong> components!</p>
+          <p>Functions are <strong>easier</strong> to reason about, to compose, to optimize, etc.</p>
+        </section>
 
-          <section id="question-whom">
-            <h2>À qui ?</h2>
-            <h4>Quel public vises-tu ?</h4>
-            <ul>
-              <li>Pros (B2B) ou grand public (B2C) ?</li>
-              <li>Débutants ou confirmés ?</li>
-              <li>Et les « étudiants » ? <small>(dont bootcamps, etc.)</small></li>
-            </ul>
-          </section>
+        <section id="fx-components-are-easier">
+          <h2>Function components are less tricky</h2>
 
-          <section id="question-how">
-            <h2>Comment ?</h2>
-            <h4>Quelles modalités et supports ?</h4>
-            <ul>
-<li>En face à face ou magistral ?</li>
-<li>Présentiel ou à distance ?</li>
-<li>Unique ou personnalisé ?</li>
-<li>Parts de visuel et d’écrit ?</li>
-<li>Parts de déroulé et d’interactif ? <small>(exos/projets, quizzes)</small></li>
-<li>Passif ou actif ? <small>(corrigés / évaluations à la main, etc.)</small></li>
-            </ul>
-          </section>
+          <p><strong>Automatically avoids</strong> most of the <strong>pitfalls</strong> inherent to <strong>out-of-render behavior</strong>, mostly instance-stored data<br/>
+            (e.g. race conditions with async updates and shared scope).</p>
 
-          <section id="question-when">
-            <h2>Quand ?</h2>
-            <ul>
-              <li>Longue durée, drip ou one-shot ?</li>
-              <li>Quelques minutes ou plusieurs heures ?</li>
-              <li><strong>Synchrone ou asynchrone ?</strong></li>
-              <li>Le soir ou en journée ? La semaine ou le week-end ?</li>
-            </ul>
-          </section>
+          <table>
+            <tbody>
+              <tr>
+                <td class="fragment" width="50%">
+                  <strong>Buggy class-based example:</strong>
+                  <pre><code class="language-jsx">
+                    class ProfilePage extends Component {
+                      showMessage = () => {
+                        alert(`Followed ${this.props.user}`)
+                      }
 
-          <section id="question-how-much">
-            <h2>Combien ?</h2>
+                      handleClick = () => {
+                        setTimeout(this.showMessage, 3000)
+                      }
 
-            <ul>
-              <li>Gratuit ou payant ?</li>
-              <li>One-shot ou abonnement ?</li>
-              <li>Finançable ou de leur poche ?</li>
-            </ul>
-          </section>
-        </section> <!-- #questions -->
+                      render() {
+                        return &lt;button onClick={this.handleClick}>Follow&lt;/button>
+                      }
+                    }
+                  </code></pre>
+                </td>
+                <td class="fragment">
+                    <strong>Bug-free function-based example:</strong>
+                    <pre ><code class="language-jsx">
+                    function ProfilePage(props) {
+                      function showMessage() {
+                        alert(`Followed ${props.user}`)
+                      }
 
-        <section>
-          <section id="formats">
-            <h1>Les formats</h1>
-          </section>
+                      function handleClick() {
+                        setTimeout(showMessage, 3000)
+                      }
 
-          <section id="format-course">
-            <h2>Cours traditionnels</h2>
+                      return (
+                        &lt;button onClick={handleClick}>Follow&lt;/button>
+                      )
+                    }
+                  </code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Donne les bons réflexes en amont</li>
-                  <li>Avance doucement (30h/trimestre &times; 1–3)</li>
-                  <li>Permet de facilement « corriger le tir »</li>
-                  <li>Forte interactivité + exos/projets évalués</li>
-                  <li>Peut déboucher sur une certification</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Horaires fixes</li>
-                  <li>Gros travail de préparation</li>
-                  <li>Peu compatible avec une vie pro</li>
-                  <li>Rarement lucratif pour l'intervenant·e</li>
-                  <li>Nécessite une structure d’accueil établie</li>
-                  <li>Forme peu de monde (max. 200/an)</li>
-                </ul>
-              </div>
-            </div>
+        <section id="fx-components-are-easier-codesandbox">
+          <h2>Function components are less tricky</h2>
 
-            <p>Verdict : <strong>pour la gloire</strong></p>
-          </section>
+          <iframe src="https://codesandbox.io/embed/pjqnl16lm7?autoresize=1&expanddevtools=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2FProfilePageClass.js" title="A CodeSandbox demonstrating an async issue with class-based components" style="width:100%; height:700px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+        </section>
 
-          <section id="format-training">
-            <h2>Formations présentielles</h2>
+        <section id="hooks-boil-down-to">
+          <h2>What hooks boil down to…</h2>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Sujets moyens/gros (≈ 7–28h)</li>
-                  <li>Forte interactivité et exos/projets évalués</li>
-                  <li>Parfaitement adaptée aux professionnels</li>
-                  <li>Lucratif (même si bon marché)</li>
-                  <li>Ne nécessite pas une structure fixe établie</li>
-                  <li>Permet de découvrir plein de cas d’usage</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Horaires fixes</li>
-                  <li>Gros travail de préparation</li>
-                  <li>Nécessairement rapide, il faut digérer</li>
-                  <li>Pas facile de corriger le tir en route</li>
-                  <li>Aucune certification d'État en sortie</li>
-                  <li>Forme peu de monde (max. 500/an)</li>
-                </ul>
-              </div>
-            </div>
+          <p class="fragment">
+            <q class="major">“Function components capture the rendered values”</q>
+            (and with hooks, same for state!)
+          </p>
+          <p class="fragment"><q class="major">“Keep variables in sync”</q></p>
+          <p class="fragment"><q class="major">“Code as if any value can change at any time”</q></p>
 
-            <p>Verdict : Idéal pour des sujets pointus et un <strong>public pro payant</strong> <small>(Plan de Développement des Compétences, indés, etc.)</small></p>
-          </section>
+          <br><br><br>
+          <h4 class="fragment">Does this deprecate class-based components?</h4>
 
-          <section id="format-webinar">
-            <h2>Webinars</h2>
+          <p class="fragment"><a href="https://reactjs.org/docs/hooks-intro.html#gradual-adoption-strategy"><strong>No</strong></a>.  Use a gradual adoption strategy.  Also, <code>getSnapshotBeforeUpdate()</code> (however rarely useful) and <code>componentDidCatch()</code> (error boundaries) have no equivalent yet.</p>
+        </section>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Adapté à tous les publics (numériques…)</li>
-                  <li>Lucratif <strong>à terme</strong> (même si bon marché)</li>
-                  <li>Pas de structure nécessaire : délocalisé !</li>
-                  <li>Peut former pas mal de monde</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Horaires fixes</li>
-                  <li>Gros travail de préparation</li>
-                  <li>Nécessairement rapide, il faut digérer</li>
-                  <li>Difficile de corriger le tir en route</li>
-                  <li>Sujets forcément ciblés (2–16h)</li>
-                  <li>Interactivité limitée</li>
-                </ul>
-              </div>
-            </div>
+        <section id="hooks-philosophy">
+          <h2>Great reads on the underlying philosophy</h2>
 
-            <p>Verdict : un peu le cul entre deux chaises : <strong>moins cher</strong> qu'une<br/>formation… mais nettement <strong>moins gratifiant</strong> pour tout le monde.</p>
-          </section>
+          <p><a href="https://dev.to/dan_abramov/making-sense-of-react-hooks-2eib">Making Sense of React Hooks</a> <cite>(Dan Abramov, Nov. 2018)</cite></p>
+          <p><a href="https://overreacted.io/how-are-function-components-different-from-classes/">How Are Function Components Different From Classes</a> <cite>(Dan Abramov, Mar. 2019)</cite></p>
+          <p><a href="https://wattenberger.com/blog/react-hooks">Thinking in React Hooks</a> <cite>(<strong>gorgeous</strong> article by Amelia Wattenberg, Oct. 2019)</cite></p>
+          <p><a href="https://overreacted.io/writing-resilient-components/#dont-stop-the-data-flow-in-side-effects">Writing Resilient Components</a> <cite>(Dan Abramov, Mar. 2019)</cite></p>
+        </section>
 
-          <section id="format-screencast">
-            <h2>Screencasts</h2>
+        <section id="class-components-wrong-1">
+          <h2>What’s wrong with class-based components?</h2>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Travail raisonnable de préparation</li>
-                  <li>Adapté à tous les publics</li>
-                  <li>Faibles coûts de prod/diffusion/vente</li>
-                  <li><strong>Revenu passif</strong></li>
-                  <li>Revisionnable comme on veut</li>
-                  <li>Peut viser des sujets variés (15'–8h)</li>
-                  <li>Peut former énormément de monde</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Pas de correction de tir possible à la volée</li>
-                  <li>Interactivité technique OK (quiz / exo), mais pas relationnelle (Q&R, déblocage…)</li>
-                  <li>Aucune certification d'État en sortie</li>
-                </ul>
-              </div>
-            </div>
+          <p>Again, classes / OOP are harder to grasp than plain functions</p>
+          <p class="fragment">
+            <strong>Hard to reuse stateful logic</strong> across components<br/>
+            (Render Props and HOCs are cumbersome, both on the code side and the debugging side)
+          </p>
 
-            <p>Verdict : excellent rapport qualité/prix… mais pas d’interaction humaine</p>
-          </section>
+          <table class="fragment">
+            <tbody>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;" width="50%"><img src="images/rp-hoc-wrapper-hell-jsx.jpg"/></td>
+                <td><img src="images/rp-hoc-wrapper-hell.png" height="420"/></td>
+              </tr>
+            </tbody>
+          </table>
 
-          <section id="format-conference-talk">
-            <h2>Talks en conférence</h2>
+          <p class="fragment"><strong>Custom hooks</strong> let us extract single-concern, reusable behavior in a snap!</p>
+        </section>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Travail raisonnable de préparation</li>
-                  <li>Revisionnable comme on veut (si vidéo)</li>
-                  <li>Adapté à des sujets très ciblés (5–50')</li>
-                  <li>Peut atteindre <strong>énormément</strong> de monde</li>
+        <section id="class-components-wrong-2">
+          <h2>What’s wrong with class-based components?</h2>
 
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Magistral : aucune interactivité hors Q&R</li>
-                  <li>On transmet mais <strong>on ne forme pas</strong>, en vrai : on suscite l’intérêt / débloque / éclaire</li>
+          <p>
+            Behavior is <strong>splattered all over</strong> the class (cdM/cwU pairs, duplicate code in cDM/cdU…)
+          </p>
 
-                </ul>
-              </div>
-            </div>
+          <br/>
 
-            <p>Verdict : pour la <strong>visibilité</strong> + la <strong>diffusion</strong></p>
-          </section>
+          <video preload="auto" src="https://video.twimg.com/tweet_video/DqsCilOU0AAoS7P.mp4" type="video/mp4" style="max-height: 600px" controls></video>
+        </section>
 
-          <section id="format-meetup-talk">
-            <h2>Talks en meetup</h2>
+        <section id="class-components-wrong-3">
+          <h2>What’s wrong with class-based components?</h2>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Faible travail de préparation ;-)</li>
-                  <li>Revisionnable comme on veut (vidéo)</li>
-                  <li>Adapté à des sujets très ciblés (5–50')</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Faible public (10-200 + max. 3 000)</li>
-                  <li>Plutôt magistral, malgré la Q&R finale</li>
-                  <li>On transmet mais on ne forme pas, en vrai : on suscite l’intérêt / débloque / éclaire</li>
-                </ul>
-              </div>
-            </div>
+          <p class="fragment">Huge components become <strong>hard to refactor and test</strong></p>
+          <p class="fragment">Classes don’t lend themselves well to <strong>upcoming optimizations</strong> (AOT compilation, memoization, component folding…)</p>
+          <p class="fragment">This is closer to <strong>React’s essence</strong> (React as a “pure” function turning state into UI)</p>
+          <p class="fragment">Check out the <a href="https://reactjs.org/docs/hooks-intro.html#motivation">Motivation for Hooks</a></p>
+        </section>
 
-            <p>Verdict : pour la <strong>visibilité</strong> + la <strong>proximité</strong></p>
-          </section>
+        <section id="hooks-releases">
+          <h2>When?</h2>
 
-          <section id="format-conference-workshop">
-            <h2>Ateliers en conférence</h2>
+          <p>Beta in Fall 2018</p>
+          <p>Official in <strong>React 16.8</strong> (Feb 6, 2019)</p>
+          <p>React Native 0.59 (Mar 12, 2019)</p>
+          <p>Preact X (Oct 1, 2019)</p>
+        </section>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Travail raisonnable de préparation</li>
-                  <li>Adapté à des sujets très ciblés (1–4h)</li>
-                  <li>Avec des assistant·e·s, peut permettre une grosse interactivité</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Nécessairement rapide, il faut digérer</li>
-                  <li>Pas facile de corriger le tir en route</li>
-                  <li>Forme très peu de monde (10–100)</li>
-                </ul>
-              </div>
-            </div>
+        <section id="examples">
+          <h1>Short examples</h1>
+        </section>
 
-            <p>Verdict : pour la <strong>visibilité</strong> + la <strong>proximité</strong></p>
-          </section>
+        <section id="example-built-in">
+          <h2>Short example : built-in hooks</h2>
 
-          <section id="format-meetup-workshop">
-            <h2>Ateliers en meetup</h2>
+          <pre><code class="language-jsx">
+            function FriendStatusWithCounter({ friend }) {
+              const [count, setCount] = <u>useState</u>(0)
+              <u>useEffect</u>(() => {
+                document.title = `You clicked ${count} times`
+              })
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Très peu de préparation</li>
-                  <li>Adapté à des sujets très ciblés (1–8h)</li>
-                  <li>Accessible à tou·te·s !</li>
-                  <li>Avec des assistant·e·s, peut permettre une grosse interactivité</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>À peu près rien si récurrent :-)</li>
-                </ul>
-              </div>
-            </div>
-            <p>Verdict : pour la <strong>visibilité</strong> + la <strong>proximité</strong></p>
-          </section>
+              const [isOnline, setIsOnline] = <u>useState</u>(null)
+              <u>useEffect</u>(() => {
+                ChatAPI.subscribeToFriendStatus(friend.id, handleStatusChange)
+                return () => {
+                  ChatAPI.unsubscribeFromFriendStatus(friend.id, handleStatusChange)
+                }
+              })
 
-          <section id="format-youtube">
-            <h2>Chaînes YouTube</h2>
+              function handleStatusChange(status) {
+                setIsOnline(status.isOnline)
+              }
+              // …
+            }
+          </code></pre>
+        </section>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Revisionnable comme on veut</li>
-                  <li>Adapté à des sujets très ciblés (5–50')</li>
-                  <li>Peut atteindre énormément de monde</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Énorme travail de préparation</li>
-                  <li>Magistral : aucune interactivité</li>
-                  <li>Financement difficile</li>
-                  <li>Très concurrentiel dans pas mal de domaines</li>
-                </ul>
-              </div>
-            </div>
-            <p>Verdict : pour la <strong>visibilité</strong> + la <strong>diffusion</strong></p>
-          </section>
+        <section id="example-redux">
+          <h2>Short example : React-Redux 7.1+</h2>
 
-          <section id="format-twitch">
-            <h2>Livestreams Twitch</h2>
+          <pre><code class="language-jsx">
+            function TodoListItem({ id }) {
+              const dispatch = <u>useDispatch</u>()
+              const todo = <u>useSelector</u>((state) => state.todos[id])
+              return (
+                &lt;li className={todo.done ? 'done' : 'todo'}>
+                  &lt;input type="checkbox" onChange={() => dispatch(toggleTodo(id))}>
+                  {todo.text}
+                &lt;/li>
+              )
+            }
+          </code></pre>
+        </section>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Très tendance (rameutage encore facile)</li>
-                  <li>Déconstruit les mythes toxiques des rockstars / ninjas</li>
-                  <li>Énorme valeur ajoutée à diffuser de bons process de débogage, tests, etc.</li>
-                  <li>Interactivité sympa via le chat, etc.</li>
-                  <li>Revisionnable comme on veut</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Exercice difficile : ternir son image, mal gérer les attentes…</li>
-                </ul>
-              </div>
-            </div>
-            <p>Verdict : pour la <strong>visibilité</strong> et le <strong>fun</strong>, mais à <strong>double-tranchant</strong>.</p>
-          </section>
+        <section id="example-router">
+          <h2>Short example : React Router 5.1+</h2>
 
-          <section id="format-book">
-            <h2>Livres</h2>
+          <pre><code class="language-jsx">
+            function Dashboard() {
+              usePageViews()
+              return (
+                &lt;div className="dashboard">
+                  &lt;HomeButton />
+                  {/* … */}
+                &lt;/div>
+              )
+            }
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Plus grand chose, en vrai…  Les crédibilité, renommée, image associées sont en perte de vitesse.</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Énorme travail, souvent vite périmé</li>
-                  <li>Atteint peu de monde (max 10 000)</li>
-                  <li>Magistral, aucune interactivité</li>
-                  <li>On se retrouve avec les erreurs à vie, ou au moins jusqu’à la prochaine édition</li>
-                  <li>Peu lucratif</li>
-                </ul>
-              </div>
-            </div>
-            <p>Verdict : pour la gloire, mais en perte totale de pertinence.</p>
-          </section>
+            function HomeButton() {
+              const history = <u>useHistory</u>()
+              return (
+                &lt;button type="button" onClick={() => history.push('/home'))}>Home&lt;/button>
+              )
+            }
 
-          <section id="format-article">
-            <h2>Articles</h2>
+            function usePageViews() {
+              const location = <u>useLocation</u>()
+              useEffect(() => ga.send(["pageview", location.pathname]), [location])
+            }
+          </code></pre>
+        </section>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Travail raisonnable de préparation</li>
-                  <li>Revisionnable comme on veut</li>
-                  <li>Adapté à des sujets très ciblés (5–50')</li>
-                  <li>Peut atteindre énormément de monde</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Magistral : aucune interactivité</li>
-                </ul>
-              </div>
-            </div>
-            <p>Verdict : pour la <strong>visibilité</strong> + la <strong>diffusion</strong>.<br/>
-              <small>Le talk de conf mais avec plus d’épaisseur…</small></p>
-          </section>
+        <section id="example-react-use">
+          <h2>Short example : <a href="https://streamich.github.io/react-use/">react-use</a> library</h2>
 
-          <section id="format-email-course">
-            <h2>Cours par e-mail</h2>
+          <pre><code class="language-jsx">
+            function Awesomeness() {
+              const [text, setText] = useState('')
+              const [state, copyToClipboard] = <u>useCopyToClipboard</u>()
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Travail raisonnable de préparation</li>
-                  <li>Correction de tir en route facile</li>
-                  <li>Construit la fidélité / l'anticipation</li>
-                  <li>Adapté à tous les publics</li>
-                  <li>Excellent “lead magnet” et “pre-sale”</li>
-                  <li>Peut atteindre énormément de monde</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Plutôt magistral</li>
-                  <li>Difficultés éventuelles de délivrabilité</li>
-                </ul>
-              </div>
-            </div>
-            <p>Verdict : plus un <strong>lead magnet</strong> qu’une vraie source de revenu</p>
-          </section>
+              const { online, type } = <u>useNetwork</u>()
+              const { latitude, longitude } = <u>useGeolocation</u>()
 
-          <section id="format-answers">
-            <h2>Réponses sur forums</h2>
+              return (
+                &lt;div>
+                  &lt;p>At {latitude}°,{longitude}°, {online ? `online over ${type}` : 'offline'}&lt;/p>
+                  &lt;input value={text} onChange={(e) => setText(e.target.value)} />
+                  &lt;button type="button" onClick={() => copyToClipboard(text)}>Copy text&lt;/button>
+                  {state.error
+                    ? &lt;p>Unable to copy value: {state.error.message}&lt;/p>
+                    : state.value && &lt;p>Copied {state.value}&lt;/p>}
+                &lt;/div>
+              )
+            }
+          </code></pre>
+        </section>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>(Généralement) rapide et facile</li>
-                  <li>Quand on veut, autant qu’on veut</li>
-                  <li>Construit une notoriété</li>
-                  <li>Résout concrètement les problèmes / blocages des gens 💖</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>Rien, en soi.  Attention à ne pas se sentir obligé·e de répondre à tout sous prétexte qu’on sait, pour finir par faire un burn-out ou à tout le moins une crise de culpabilité : vous ne devez rien à personne !</li>
-                </ul>
-              </div>
-            </div>
-            <p>Verdict : pour la gloire (mais <strong>très gratifiant</strong>)</p>
-          </section>
+        <section id="main-hooks">
+          <h1>Main built-in hooks</h1>
+        </section>
 
-          <section id="format-tweets">
-            <h2>Tweets</h2>
+        <section id="usestate">
+          <h2><a href="https://reactjs.org/docs/hooks-state.html"><code>useState</code></a></h2>
 
-            <div class="pros-and-cons">
-              <div>
-                <h4>Pour</h4>
-                <ul>
-                  <li>Rapide et facile</li>
-                  <li>Quand on veut, autant qu’on veut</li>
-                  <li>Construit <strong>parfois</strong> une notoriété <small>(arbre, forêt, toussa…)</small></li>
-                  <li>Peut aider concrètement des gens 💖</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Contre</h4>
-                <ul>
-                  <li>La visibilité reste délicate à définir…</li>
-                  <li>Très limité comme format, autant pour diffuser une info que pour répondre à une demande</li>
-                </ul>
-              </div>
-            </div>
-            <p>Verdict : pour la <strong>visibilité</strong></p>
-          </section>
-        </section> <!-- #formats -->
+          <p>Local state: one major reason people used classes</p>
+          <p class="fragment"><code>setState</code> was often poorly understood through (delta, async, batched, obj. vs cb)</p>
+          <p class="fragment">Can still do object-as-state, but will replace the whole thing: <strong>favor discrete state entries</strong>.</p>
+          <p class="fragment"><strong>Arg is initial state</strong>; returned iterable is <strong>current value</strong> (as of rendering) + <stron>
+            setter
+          </stron>.</p>
 
-        <section id="choosing">
-          <h2>Que choisir alors ?</h2>
-          <p>FIXME</p>
+          <div class="fragment">
+            <pre><code class="language-jsx">
+              function Workshop() {
+                const [attendees, setAttendees] = <u>useState</u>(0)
 
-          <!--
+                return (
+                  &lt;div>
+                    &lt;h1>There are {attendees} attendees&lt;/h1>
+                    &lt;button onClick={() => setAttendees(attendees + 1)}>
+                      Welcome!
+                    &lt;/button>
+                  &lt;/div>
+                )
+              }
+            </code></pre>
+          </div>
+        </section>
 
-Tout dépend ! Je peux vous dire ce que j’ai fait / on fait chez DI :
+        <section id="usestate-lazy-init">
+          <h2><a href="https://reactjs.org/docs/hooks-state.html"><code>useState</code></a></h2>
 
-- Formation présentielle (moi depuis 1996, DI depuis 2011)
-- Articles (depuis toujours)
-- Talks & ateliers (depuis 1997, en confs et meetups)
-- Screencasts (depuis 2016 un peu, 2019 vraiment)
-  (code promo sur les screencasts, 20 par cours au total, 7j, -50%)
+          <p>Arg can be a callback for expensive initial-value computation (called only at mount).</p>
 
-Je ne fais plus de réponses sur forums (plus le temps, mais ça m’a beaucoup aidé en 2005) et les tweets tech ne sont pas une stratégie dédiée.
+          <pre><code class="language-jsx">
+            function Table({ count }) {
+              const [rows, setRows] = useState(() => createRows(count))
 
-Un chemin classique et efficace : articles -> talks/ateliers -> screencasts -> formation.
+              // …
+            }
+          </code></pre>
 
+          <h4 class="fragment">Also note:</h4>
 
-           -->
+          <p class="fragment">No separate default state initialization (in constructor)</p>
+          <p class="fragment">No need to bind so we could call <code>this.setState</code>, etc.</p>
+        </section>
+
+        <section id="useeffect">
+          <h2><a href="https://reactjs.org/docs/hooks-effect.html"><code>useEffect</code></a></h2>
+
+          <p>
+            For any side effect that <strong>doesn’t block rendering</strong><br/>
+            (it’s critical for features such as Suspense and Concurrent Mode that rendering be interruptible)
+          </p>
+          <p>Examples: data fetching, subscription management, DOM changes…</p>
+
+          <pre><code class="language-jsx">
+            function Workshop() {
+              const [attendees, setAttendees] = useState(0)
+              const text = `There are ${attendees} attendees`
+
+              <u>useEffect(</u>() => { document.title = text })
+
+              return (
+                &lt;div>
+                  &lt;h1>{text}&lt;/h1>
+                  &lt;button onClick={() => setAttendees(attendees + 1)}>Welcome!&lt;/button>
+                &lt;/div>
+              )
+            }
+          </code></pre>
+        </section>
+
+        <section id="cleanup-with-classes">
+          <h2>Effects with cleanup (the <code>class</code> way. Ugh.)</h2>
+
+          <pre><code class="language-jsx" style="font-size: 0.8em">
+            class WorkshopBroadcast extends Component {
+              constructor(props) {
+                super(props)
+                this.state = { status: null }
+                this.handleStatusChange = this.handleStatusChange.bind(this)
+              }
+              componentDidMount() {
+                StreamingAPI.subscribeToWorkshop(this.props.workshop.id, this.handleStatusChange) // 1a
+              }
+              componentDidUpdate(prevProps) {
+                StreamingAPI.unsubscribeFromWorkshop(prevProps.workshop.id, this.handleStatusChange) // 2a
+                StreamingAPI.subscribeToWorkshop(this.props.workshop.id, this.handleStatusChange) // 1b
+              }
+              componentWillUnmount() {
+                StreamingAPI.unsubscribeFromWorkshop(this.props.workshop.id, this.handleStatusChange) // 2b
+              }
+              handleStatusChange(status) {
+                this.setState({ status })
+              }
+              render() {
+                if (this.state.status === null) { return 'Loading…' }
+                return this.state.status === 'future' ? 'Coming soon' : this.state.status
+              }
+            }
+          </code></pre>
+        </section>
+
+        <section id="effect-cleanup">
+          <h2>Effects with cleanup (the hooks way)</h2>
+
+          <p>Callbacks return the cleanup function!</p>
+
+          <pre><code class="language-jsx">
+            function WorkshopBroadcast({ workshop }) {
+              const [status, setStatus] = useState(null)
+
+              useEffect(() => {
+                StreamingAPI.subscribeToWorkshop(workshop.id, setStatus)
+                <u>return () => { StreamingAPI.unsubscribeFromWorkshop(workshop.id, setStatus) }</u>
+              })
+
+              if (status === null) { return 'Loading…' }
+              return status === 'future' ? 'Coming soon' : status
+            }
+          </code></pre>
+
+          <p>Much nicer than lifecycle (e.g. <code>componentDidMount</code>, <code>componentDidUpdate</code>, <code>componentWillUnmount</code>).</p>
+          <p>Lets us keep concerns <strong>in one single place</strong>.</p>
+        </section>
+
+        <section id="skipping-effects">
+          <h2>Skipping effects when unnecessary</h2>
+
+          <p> Used to be (unless you forgot to maintain it): </p>
+
+          <pre><code class="language-jsx">
+            <u>componentDidUpdate</u>(prevProps) {
+              if (<u>prevProps.workshop.id !== this.props.workshop.id</u>) {
+                // …
+              }
+            }
+          </code></pre>
+
+          <p>With hooks, declare your effect dependencies:</p>
+
+          <pre><code class="language-jsx">
+            useEffect(() => {
+              StreamingAPI.subscribeToWorkshop(workshop.id, setStatus)
+              return () => { StreamingAPI.unsubscribeFromWorkshop(workshop.id, setStatus) }
+            }<u>, [workshop.id]</u>)
+          </code></pre>
+
+          <p><a href="https://reactjs.org/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies">Careful about your effect dependencies</a>.</p>
+
+          <p>Empty dependency list? Only at mount/unmount, not on updates.</p>
+        </section>
+
+        <section id="bp-one-effect-per-concern">
+          <h2>Best practice: one effect per concern</h2>
+
+          <pre><code class="language-jsx">
+            function WorkshopBroadcast({ workshop }) {
+              const [status, setStatus] = useState(null)
+
+              <u>useEffect</u>(() => {
+                document.title = status === 'ongoing'
+                    ? `You’re watching ${workshop.title}`
+                    : `${workshop.title}: ${status}`
+              }, [workshop, status])
+
+              <u>useEffect</u>(() => {
+                StreamingAPI.subscribeToWorkshop(workshop.id, setStatus)
+                return () => { StreamingAPI.unsubscribeFromWorkshop(workshop.id, setStatus) }
+              }, [workshop.id])
+
+              if (status === null) {
+                return 'Loading…'
+              }
+              return status === 'future' ? 'Coming soon' : status
+            }
+          </code></pre>
+        </section>
+
+        <section id="grokking-effects">
+          <h2>Grokking effects for realz</h2>
+
+          <p><a href="https://reactjs.org/docs/hooks-effect.html">The official hook documentation</a></p>
+          <p><a href="https://overreacted.io/a-complete-guide-to-useeffect/">A Complete Guide to useEffect</a> (Dan Abramov, Mar. 2019, must-read!)</p>
+        </section>
+
+        <section id="usecontext">
+          <h2><code>useContext</code></h2>
+
+          <p>For context production/consumption.  Yet another thing that had us reach for classes.</p>
+
+          <pre><code class="language-jsx">
+              const stages = { junior: { name: 'Junior Stage', seats: 50 }, master: { name: 'Master Stage', seats: 352 } }
+              const StageContext = createContext(stages)
+
+              function Event({ workshop }) {
+                return (
+                  &lt;StageContext.Provider value={stages.junior}>
+                    &lt;Workshop workshop={workshop} />
+                  &lt;/StageContext>
+                )
+              }
+
+              function Workshop({ workshop: { title } }) {
+                const stage = <u>useContext</u>(StageContext)
+                return (
+                  &lt;div className="workshop">{title} at {stage.name}!&lt;/div>
+                )
+              }
+          </code></pre>
+        </section>
+
+        <section id="rules-of-hooks">
+          <h1>The rules of hooks</h1>
+          <h4>(and why they’re needed) • <a href="https://reactjs.org/docs/hooks-rules.html">Official docs here</a></h4>
+        </section>
+
+        <section id="rule-top-level-only">
+          <h2>Rule 1: Top-level only (no loops, no conditions)</h2>
+
+          <p>This means same exact list and order on every render</p>
+          <p><strong>Ensures no mixup of internal state</strong>. Most importantly, lets us:</p>
+          <ul>
+            <li> Call the same base hook <strong>multiple times</strong> </li>
+            <li> Avoid any sort of name/scope clash </li>
+            <li> Extract <strong>custom hooks</strong> (major benefit of hooks!) </li>
+          </ul>
+          <p>By far the most controversial design choice, yet <a href="https://overreacted.io/why-do-hooks-rely-on-call-order/">absolutely necessary</a>, as every alternative proposal has flaws.</p>
+        </section>
+
+        <section id="rule-only-from-react-fx">
+          <h2>Rule 2: Only call hooks from “React” functions</h2>
+
+          <p>Not regular JS functions outside of the FC <em>or custom hook</em></p>
+          <p>This would make hooks harder to trace for developers, hindering maintenance and fostering bugs</p>
+        </section>
+
+        <section id="rules-eslint">
+          <h2>The ESLint plugin</h2>
+
+          <p>Making sure we observe the rules is not always easy.</p>
+
+          <p><a href="https://www.npmjs.com/package/eslint-plugin-react-hooks">eslint-plugin-react-hooks</a> to the rescue!</p>
+
+          <ul>
+            <li><tt>rules-of-hooks</tt> checks the rules themselves.  Especially cool for top-level requirement.</li>
+            <li><tt>exhaustive-deps</tt> makes sure your effects’ dependency lists appear to be complete.</li>
+          </ul>
+
+        </section>
+
+        <section id="custom-hooks">
+          <h1>The great power<br/>
+            of <a href="https://reactjs.org/docs/hooks-custom.html">custom hooks</a></h1>
+        </section>
+
+        <section id="custom-hooks-a-major-goal">
+          <h2>Achievement unlocked</h2>
+
+          <p>This is a <strong>major design goal</strong> of the hooks API: making it super-easy to <strong>extract reusable, stateful logic</strong> and blend it seamlessly in any other components. Used to require much harder patterns such as Render Props or HOCs, that were hard to get right and bloated the DevTools in a major way, among other drawbacks.</p>
+
+          <p>Let’s start from…</p>
+
+          <pre><code class="language-jsx">
+            function WorkshopBroadcast({ workshop }) {
+              const [status, setStatus] = useState(null)
+
+              useEffect(() => {
+                StreamingAPI.subscribeToWorkshop(workshop.id, setStatus)
+                return () => { StreamingAPI.unsubscribeFromWorkshop(workshop.id, setStatus) }
+              })
+
+              if (status === null) {
+                return 'Loading…'
+              }
+              return status === 'future' ? 'Coming soon' : status
+            }
+          </code></pre>
+        </section>
+
+        <section id="extracting-a-custom-hook">
+          <h2>Extracting our hook</h2>
+
+          <p> Now let’s extract the whole status-management part out of it: </p>
+
+          <pre><code class="language-jsx">
+            function <u>useWorkshopStatus</u>({ id }) {
+              const [status, setStatus] = useState(null)
+
+              useEffect(() => {
+                StreamingAPI.subscribeToWorkshop(id, setStatus)
+                return () => { StreamingAPI.unsubscribeFromWorkshop(id, setStatus) }
+              })
+
+              <u>return status</u>
+            }
+          </code></pre>
+
+          <p><strong>Nothing new</strong>: we just copy-pasted from above and simplified it a bit.</p>
+        </section>
+
+        <section id="custom-hook-extracted">
+          <h2>There you go!</h2>
+
+          <p> Our <code>WorkshopBroadcast</code> now is: </p>
+
+          <pre><code class="language-jsx">
+            function WorkshopBroadcast({ workshop }) {
+              <u>const status = useWorkshopStatus(workshop.id)</u>
+
+              if (status === null) {
+                return 'Loading…'
+              }
+              return status === 'future' ? 'Coming soon' : status
+            }
+          </code></pre>
+
+          <p> Sweet! </p>
+
+          <p class="fragment"><strong>You should very much call your custom hooks <code>use<i>Xxx</i></code></strong><br/>
+            so the linter plugin can check it against the Rules of Hooks, by the way.</p>
+
+          <p class="fragment">This naturally flows from the Hooks API design; it extracts stateful logic whilst retaining the automatic isolation of states we had when directly calling <code>useState</code>, etc.  <strong>It’s just functions</strong> after all!</p>
+
+          <p class="fragment">Just look at stuff like <a href="https://streamich.github.io/react-use/">react-use</a>!</p>
+        </section>
+
+        <section id="debugging-hooks">
+          <h2>Debugging hooks</h2>
+
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <p> React Devtools have supported hooks since January 2019. </p>
+
+                  <img src="images/screen-shot-rdt-hooks.png" alt="A screenshot of hook introspection in React DevTools" style="zoom: 150%"/>
+                </td>
+                <td>
+                  <p>For your custom hooks, you can use <a href="https://reactjs.org/docs/hooks-reference.html#usedebugvalue"><code>useDebugValue</code></a> to inject custom labels in there.</p>
+
+                  <pre><code class="language-jsx">
+                    function useWorkshopStatus({ id }) {
+                      const [status, setStatus] = useState(null)
+
+                      useEffect(() => {
+                        StreamingAPI.subscribeToWorkshop(id, setStatus)
+                        return () => { StreamingAPI.unsubscribeFromWorkshop(id, setStatus) }
+                      })
+
+                      <u>useDebugValue(status)</u>
+
+                      return status
+                    }
+                  </code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="testing-hooks">
+          <h1>Testing hooks</h1>
+          <h4><a href="https://reactjs.org/docs/testing.html">The docs are awesome</a></h4>
+        </section>
+
+        <section id="choosing-a-testing-stack">
+          <h2>Choosing a testing stack</h2>
+
+          <p>You can technically <a href="https://reactjs.org/docs/hooks-faq.html#how-to-test-components-that-use-hooks">use React’s test utilities</a> with their <code>ReactTestUtils.act()</code> function to test your hook-using components. This is a bit bare-bones and creates a lot of boilerplate, though.</p>
+
+          <p class="fragment">The recommended stack from React and many others is <strong><a href="https://jestjs.io">Jest</a></strong> as a test harness (you betcha!) and <strong><a href="https://testing-library.com/docs/react-testing-library/intro">React Testing Library</a></strong> (RTL), for more of an acceptance testing. <a href="https://airbnb.io/enzyme/">Enzyme</a> remains popular but is very unit-focused, requires full DOM testing and wrapper components over our hooks, so <a href="https://react-hooks-testing-library.com">react-hooks-testing-library</a> should do a better job for unit testing.</p>
+        </section>
+
+        <section id="regular-testing">
+          <h2>Using regular Rest Test Utilities</h2>
+
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <pre><code class="language-jsx">
+                    let container = null
+                    beforeEach(() => {
+                      // Events wouldn’t propagate + reach React outside `document`
+                      container = document.createElement('div')
+                      document.body.appendChild(container)
+                    })
+
+                    afterEach(() => {
+                      // Avoid leaks!
+                      <u>unmountComponentAtNode</u>(container)
+                      container.remove()
+                      container = null
+                    })
+
+                    // (Continued right)
+                  </code></pre>
+                </td>
+                <td>
+                  <pre><code class="language-jsx">
+                    // (Continued)
+
+                    it('can render and update an attendee count', () => {
+                      // Test first render and effect
+                      act(() => {
+                        ReactDOM.render(&lt;Workshop />, container)
+                      })
+                      const button = container.querySelector('button')
+                      const label = container.querySelector('h1')
+                      expect(label.textContent).toBe('There are 0 attendees')
+                      expect(document.title).toBe('There are 0 attendees')
+
+                      // Test second render and effect
+                      act(() => {
+                        button.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+                      })
+                      expect(label.textContent).toBe('There are 1 attendees')
+                      expect(document.title).toBe('There are 1 attendees')
+                    })
+                  </code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="react-testing-library">
+          <h2>Using React Testing Library</h2>
+
+          <p>Much less boilerplate, and more user-oriented, so more resilient to changes…</p>
+
+          <pre><code class="language-jsx">
+            import { render, fireEvent } from '@testing-library/react'
+            import '@testing-library/jest-dom/extend-expect'
+
+            it('can render and update an attendee count', () => {
+              // Test first render and effect
+              const { getByText, getByRole } = render(&lt;Workshop />)
+              expect(<u>getByRole('heading')</u>).toHaveTextContent('There are 0 attendees')
+              expect(document.title).toBe('There are 0 attendees')
+
+              // Test second render and effect
+              <u>fireEvent.click(getByText('Welcome!'))</u>
+              expect(getByRole('heading')).toHaveTextContent('There are 1 attendees')
+              expect(document.title).toBe('There are 1 attendees')
+            })
+          </code></pre>
+        </section>
+
+        <section id="other-built-in-hooks">
+          <h1>Other built-in hooks</h1>
+        </section>
+
+        <section id="usereducer">
+          <h2>Getting nifty with useReducer</h2>
+          <h4>(and how you might strip Redux)</h4>
+
+          <p>Sometimes a ton of discrete states are not what you want, or multiple different calls to the setters get kludgy. “State that changes together should live together.” We used to bite the bullet and go full Redux on this, but if it’s still component-local, you can opt for a middle ground with the built-in <a href="https://reactjs.org/docs/hooks-reference.html#usereducer"><code>useReducer</code></a>.</p>
+
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <pre><code class="language-jsx">
+                    function reducer(state, { type }) {
+                      switch (type) {
+                        case 'INC':
+                          return state + 1
+                        case 'DEC':
+                          return state - 1
+                        case 'RESET':
+                          return 0
+                      }
+                    }
+                  </code></pre>
+                </td>
+                <td>
+                  <pre><code class="language-jsx">
+                    function Workshop() {
+                      const [attendees, dispatch] = useReducer(reducer, 0)
+
+                      return (
+                        &lt;div>
+                          &lt;h1>There are {attendees} attendees&lt;/h1>
+                          &lt;button onClick={() => dispatch({ type: 'INC' })}>Welcome!&lt;/button>
+                          &lt;button onClick={() => dispatch({ type: 'DEC' })}>Bye!&lt;/button>
+                          &lt;button onClick={() => dispatch({ type: 'RESET' })}>New session&lt;/button>
+                        &lt;/div>
+                      )
+                    }
+                  </code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Need to use the state far down the tree?  Pass (pre-bound) <code>dispatch</code> through a context! (<a href="https://reactjs.org/docs/hooks-faq.html#how-to-avoid-passing-callbacks-down">recommended</a>)</p>
+        </section>
+
+        <section id="useref">
+          <h2>The peculiar case of <code>useRef</code></h2>
+
+          <p>
+            Besides state, class-based components sometimes store stuff in <strong>“instance variables,”</strong> that is, expando properties on <code>this</code>. For instance, DOM nodes, timer IDs and whatnot.
+          </p>
+
+          <p class="fragment">You also need, albeit <em>very rarely</em>, to <strong>“read from the future,”</strong> which means getting the latest value, at time of execution, regardless of what the value was at the time of the latest rendering (which you do usually want to use).</p>
+
+          <p class="fragment">The <a href="https://reactjs.org/docs/hooks-reference.html#useref"><code>useRef</code> hook</a> will do just that. You could for instance use it as a clutch to retain references to “previous” values, such as previous state values.</p>
+
+          <p class="fragment">Say you want to keep a timer interval around; if you change its delay, you need to clear the previous one and create a new one, sure. But if you don't change anything to it, or change its callback, you don't want to have its periodicity reset. You want a <strong>declarative</strong> timer interval system. How would you go about it?</p>
+        </section>
+
+        <section id="useref-demo">
+          <h2><code>useRef</code> in action: declarative timers</h2>
+
+          <pre><code class="language-jsx">
+            function useInterval(callback, delay) {
+              const savedCallback = useRef()
+
+              // Remember the latest callback.
+              useEffect(() => {
+                savedCallback.current = callback
+              }, [callback])
+
+              // Set up the interval.
+              useEffect(() => {
+                if (delay !== null) {
+                  const id = setInterval(savedCallback.current, delay)
+                  return () => clearInterval(id)
+                }
+              }, [delay])
+            }
+          </code></pre>
+
+          <p><a href="https://overreacted.io/making-setinterval-declarative-with-react-hooks/">Check out this article for full details</a>.</p>
+        </section>
+
+        <section id="usememo">
+          <h2><code>useMemo</code>: granular memoization</h2>
+
+          <p>At the component function level, React lets us prevent needless re-renderings based on shallow props comparison using <a href="https://reactjs.org/docs/react-api.html#reactmemo"><code>React.memo()</code></a>, which is akin to <code>PureComponent</code> for classes.  But often we’d like a more granular approach, to optimize away needlessly redoing expensive computations.</p>
+
+          <p>This is what <a href="https://reactjs.org/docs/hooks-reference.html#usememo"><code>useMemo()</code></a> helps us achieve.</p>
+
+          <pre><code class="language-jsx">
+            function Chart({ dateRange }) {
+              const data = <u>useMemo(() =></u> getDataWithinRange(dateRange)<u>, [dateRange])</u>
+              // …
+            }
+          </code></pre>
+
+          <p><strong>Just like <code>React.memo()</code>, this is a hint, not a guarantee.</strong><br/>
+            Don’t rely on it or algorithm correctness, only for performance optimization.</p>
+        </section>
+
+        <section id="usecallback-singletons">
+          <h2><code>useCallback</code></h2>
+
+          <p>There are <strong>two reasons</strong> to reach for <a href="https://reactjs.org/docs/hooks-reference.html#usecallback"><code>useCallback()</code></a>.</p>
+
+          <p><strong>First reason:</strong> helping optimized children not re-render because you’re passing a different callback every time. You would pass the <em>same</em> callback as long as nothing in its closure changes:</p>
+
+          <pre><code class="language-jsx">
+            function NiceParent({ user, removable }) {
+              const onPingUser = <u>useCallback(</u>() => pingUser(user.id)<u>, [user.id])</u>
+              return (
+                &lt;div className="userPane">
+                  &lt;ActionsPane user={user} onPingUser={onPingUser} />
+                  {removable && &lt;UserRemover user={user} />}
+                &lt;/div>
+              )
+            }
+          </code></pre>
+        </section>
+
+        <section id="usecallback-nodes">
+          <h2><code>useCallback</code></h2>
+
+          <p><strong>Second reason:</strong> you could rely on it for <a href="https://reactjs.org/docs/refs-and-the-dom.html#callback-refs">callback refs</a>, to be notified any time the underlying node does get rendered, perhaps for measuring it, making sure to reuse a single callback across renders:</p>
+
+          <pre><code class="language-jsx">
+            function YayTall() {
+              const [height, setHeight] = useState(0)
+
+              const measuredRef = <u>useCallback((node) => {</u>
+                if (node != null) {
+                  setHeight(node.getBoundingClientRect().height)
+                }
+                // Or ES2020: setHeight(node?.getBoundingClientRect().height ?? 0) 😎
+              }<u>, []</u>)
+
+              return (
+                &lt;>
+                  &lt;h1 <u>ref={measuredRef}</u>>Hey there!&lt;/h1>
+                  &lt;h2>The above header is {Math.round(height)} pixels tall, ya know…&lt;/h2>
+                &lt;/>
+              )
+            }
+          </code></pre>
+        </section>
+
+        <section id="usecallback-custom-hook">
+          <h2>DOM measurement: custom hook much?</h2>
+
+          <pre><code class="language-jsx">
+            function <u>useClientRect</u>() {
+              const [rect, setRect] = useState({ width: 0, height: 0 })
+              const ref = useCallback((node) => {
+                if (node != null) {
+                  setRect(node.getBoundingClientRect())
+                }
+              }, [])
+              return <u>[rect, ref]</u>
+            }
+
+            function YayTall() {
+              <u>const [rect, reft] = useClientRect()</u>
+
+              return (
+                &lt;>
+                  &lt;h1 ref={ref}>Hey there!&lt;/h1>
+                  &lt;h2>The above header is {Math.round(rect.height)} pixels tall, ya know…&lt;/h2>
+                &lt;/>
+              )
+            }
+          </code></pre>
+        </section>
+
+        <section id="odds-and-ends">
+          <h2>Odds and ends</h2>
+
+          <p><a href="https://reactjs.org/docs/hooks-reference.html#useimperativehandle"><code>useImperativeHandle</code></a> lets you allow refs on your FCs, customizing the imperative methods they expose.<br/>
+            Useful when your FCs <a href="https://reactjs.org/docs/forwarding-refs.html">forward refs</a>.</p>
+
+          <p class="fragment"><a href="https://reactjs.org/docs/hooks-reference.html#uselayouteffect"><code>useLayoutEffect</code></a> is for <strong>synchronous effects</strong> ⚠️😱 — you should rarely ever need it. The one use-case is essentially “read the DOM then synchronously re-render,” before the browser even has a chance to paint (same phase as <code>componentDidMount</code>/<code>componentDidUpdate</code>). Like, super-early layout measurement, or DOM mutation that would alter the layout (so you avoid flickering).</p>
+        </section>
+
+        <section id="further-reading-videos-docs">
+          <h2 class="breathing">Further reading</h2>
+
+          <h4>Videos</h4>
+
+          <p><a href="https://www.youtube.com/watch?v=wXLf18DsV-I">90% Cleaner React With Hooks</a> <cite>from React Conf 2018 (33', free)</cite></p>
+          <p><a href="https://egghead.io/courses/simplify-react-apps-with-react-hooks">Simplify React Apps with React Hooks</a> <cite>on Egghead (38', free)</cite></p>
+          <p><a href="https://egghead.io/courses/reusable-state-and-effects-with-react-hooks">Reusable State and Effects with React Hooks</a> <cite>on Egghead (57', free)</cite></p>
+
+          <h4>Docs</h4>
+
+          <p><a href="https://reactjs.org/docs/hooks-intro.html">Official docs</a> (excellent)</p>
+
+          <p>Especially take a look at the <a href="https://reactjs.org/docs/hooks-faq.html">Hooks FAQ</a> once you’re comfortable</p>
+        </section>
+
+        <section id="further-reading-articles">
+          <h2 class="breathing">Further reading</h2>
+
+          <h4>Articles</h4>
+
+          <p>Most posts on <a href="https://overreacted.io/">Dan Abramov's blog</a>. I especially recommend (in addition to already linked ones):</p>
+
+          <p><a href="https://overreacted.io/react-as-a-ui-runtime/">React as a UI Runtime</a> (must-read for any React dev!)</p>
+          <p><a href="https://overreacted.io/why-isnt-x-a-hook/">Why Isn’t X a Hook?</a> (lays a number of arguments to rest)</p>
+          <p><a href="https://overreacted.io/making-setinterval-declarative-with-react-hooks/">Making setInterval declarative with React Hooks</a> (great use of ref hooks with imperative APIs)</p>
+          <p><a href="https://overreacted.io/writing-resilient-components/">Writing Resilient Components</a> (always a good idea)</p>
+        </section>
+
+        <section id="screencasts">
+          <h2>Do you like screencasts?</h2>
+
+          <p>We publish about one new video course every month, mostly around Git and JS.</p>
+
+          <br>
+          <h4>
+            Check them out in
+            <a href="https://screencasts.delicious-insights.com/">English</a> or
+            <a href="https://cours-video.delicious-insights.com/">French</a>.
+          </h4>
+
+          <p>Some are even free!</p>
+        </section>
+
+        <section id="trainings">
+          <h2>Prefer in-room training?</h2>
+          <h4>We love’em too.</h4>
+
+          <br>
+          <p>My company, <a href="https://delicious-insights.com/en/">Delicious Insights</a>, does absolutely <strong>kick-ass training</strong> classes on stuff you love:</p>
+
+          <p style="font-size: 1.2em">
+            <a href="https://delicious-insights.com/en/trainings/modern-web-apps/">Modern Web Apps</a> stack,
+            <a href="https://delicious-insights.com/en/trainings/node-js/">Node.js</a>,
+            <a href="https://delicious-insights.com/en/trainings/webpack/">Webpack</a>,<br/>
+            <a href="https://delicious-insights.com/en/trainings/360-git/">Git</a> (yes, you <strong>will</strong> learn a ton),<br/>
+            <a href="https://delicious-insights.com/fr/formations/architecture-css/">CSS Architecture</a> (French only for now) and<br/>
+            <a href="https://delicious-insights.com/en/trainings/360-es/">100% of the latest ECMAScript</a>.
+          </p>
+
+          <p>Guess what?</p>
+
+          <h4>🎁 Station F Founders teams get &minus;15% 🎁</h4>
+
+          <p>And we’re just 20 minutes away.</p>
         </section>
 
         <section id="thank-you">
-          <h1>Merci !</h1>
-          <h3>Et transmettez avec passion.</h3>
+          <h1>Thanks!</h1>
+          <h3>Enjoy React.</h3>
           <br>
           <p>Christophe Porteneuve</p>
           <p><a href="https://twitter.com/porteneuve">@porteneuve</a></p>
 
           <p class="breathing">
-            Les slides sont sur <a href="http://bit.ly/formats-edu">bit.ly/formats-edu</a><br/>
+            Slides are at <a href="https://bit.ly/stationf-react-hooks">bit.ly/stationf-react-hooks</a><br/>
           </p>
         </section>
 
