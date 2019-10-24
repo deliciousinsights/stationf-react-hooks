@@ -848,7 +848,7 @@ const christophe = {
               // Set up the interval.
               useEffect(() => {
                 if (delay !== null) {
-                  const id = setInterval(savedCallback.current, delay)
+                  const id = setInterval(() => savedCallback.current(), delay)
                   return () => clearInterval(id)
                 }
               }, [delay])
@@ -937,7 +937,7 @@ const christophe = {
             }
 
             function YayTall() {
-              <u>const [rect, reft] = useClientRect()</u>
+              <u>const [rect, ref] = useClientRect()</u>
 
               return (
                 &lt;>
